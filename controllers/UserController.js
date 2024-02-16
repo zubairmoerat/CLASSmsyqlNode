@@ -3,7 +3,7 @@ import bodyParser from "body-parser";
 import { users } from "../model/index.js";
 import { verifyToken } from "../middleware/authenticateUser.js";
 
-const router = express.Router()
+const userRouter = express.Router()
 userRouter.get('/',(req, res)=>{
     try{
         users.fetchUsers(req, res)
