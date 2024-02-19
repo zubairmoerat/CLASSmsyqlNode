@@ -15,7 +15,7 @@ class Products{
     }
     fetchProduct(req, res){
         const qry = `
-        SELECT prodID, prodName, ProdQuantity, prodAmount, userID
+        SELECT prodID, prodName, prodQuantity, prodAmount, userID
         FROM Products
         WHERE prodID = ${req.params.id};
         `
@@ -32,11 +32,38 @@ class Products{
         INSERT INTO Products
         SET ?;
         `
-        db.query(qry, (err)=>{
+        db.query(qry,[req.body], (err)=>{
             if(err) throw err
             res.json({
                 status: res.statusCode,
                 msg: "New product added"
+            })
+        })
+    }
+    updateProduct(req, res){
+        const qry =`
+        UPDATE Products
+        SET ?
+        WHERE prodID = ${req.params.prodID};
+        `
+        db.query(qry,[req.body], (err)=>{
+            if(err) throw err
+            res.json({
+                status: res.statusCode,
+                msg: "Product updated successfully"
+            })
+        })
+    }
+    deleteProduct(req, res){
+        const qry=`
+        DELETE FROM Products
+        WHERE prodID = ${req.params.prodID};
+        `
+        db.query(qry,[req.body], (err)=>{
+            if(err) throw err
+            res.json({
+                status: res.statusCode,
+                msg: "Product deleted successfully"
             })
         })
     }

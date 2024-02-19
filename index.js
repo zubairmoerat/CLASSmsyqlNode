@@ -1,5 +1,5 @@
 import { userRouter, express } from "./controllers/UserController.js";
-import { producctsRouter } from "./controllers/ProductsController.js";
+import { productsRouter } from "./controllers/ProductsController.js";
 import cookieParser from "cookie-parser";
 import {errorHandling} from "./middleware/ErrorHandling.js"
 import path from 'path';
@@ -32,7 +32,7 @@ app.get('^/$|/classMsqlNode', (req, res)=>{
     res.status(200).sendFile(path.join(__dirname, './static/index.html'))
 })
 app.use('/users', userRouter)
-app.use('/products', producctsRouter)
+app.use('/products', productsRouter)
 app.use(errorHandling)
 app.listen(port, ()=>{
     console.log(`Server is running on port:${port}`);
