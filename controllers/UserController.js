@@ -34,6 +34,26 @@ userRouter.post('/register', bodyParser.json(), (req, res)=>{
         })
     }
 })
+userRouter.patch('/updateAccount/:id', bodyParser.json(), (req, res)=>{
+    try{
+        users.updateUser(req, res)
+    }catch(e){
+        res.json({
+            status: res.statusCode,
+            msg: "Try again later."
+        })
+    }
+})
+userRouter.delete('/deleteAccount/:id', bodyParser.json(), (req, res)=>{
+    try{
+        users.deleteUser(req, res)
+    }catch(e){
+        res.json({
+            status: res.statusCode,
+            msg: "Try again later."
+        })
+    }
+})
 export{
     userRouter, 
     express
