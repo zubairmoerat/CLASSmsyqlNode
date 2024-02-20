@@ -57,6 +57,33 @@ class Users{
             }
         })
     }
+    updateUser(req, res){
+        const qry = `
+        UPDATE Users
+        SET ?
+        WHERE userID = ${req.params.id}
+        `
+        db.query(qry, [req.body], (err)=>{
+            if(err) throw err
+            res.json({
+                status: res.statusCode,
+                msg: "You have successfully updated your account."
+            })
+        })
+    }
+    deleteUser(req, res){
+        const qry = `
+        DELETE FROM Users
+        WHERE userID = ${req.params.id}
+        `
+        db.query(qry, [req.body], (err)=>{
+            if(err) throw err
+            res.json({
+                status: res.statusCode,
+                msg: "Your Account has been deleted."
+            })
+        })
+    }
 }
 export{
     Users
