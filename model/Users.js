@@ -57,13 +57,17 @@ class Users{
             }
         })
     }
-    updateUser(req, res){
+    async updateUser(req, res){
+        const data = req.body
+        if(data?.userPwd){
+            data.userPwd = await hash(data?.userPwd, 8)
+        }
         const qry = `
         UPDATE Users
         SET ?
         WHERE userID = ${req.params.id}
         `
-        db.query(qry, [req.body], (err)=>{
+        db.query(qry, [data], (err)=>{
             if(err) throw err
             res.json({
                 status: res.statusCode,
@@ -82,6 +86,43 @@ class Users{
                 status: res.statusCode,
                 msg: "Your Account has been deleted."
             })
+        })
+    }
+    login(req, res){
+        const {emailAdd, userPwd} = req.body
+        const qry = `
+        SELECT userID, firstName, lastName, userAge, gender, emailAdd, userPwd, userRole
+        FROM Users
+        WHERE emailAdd = '${emailAdd}';
+        `
+        db.query(qry, async(err, result)=>{
+            if(err) throw err
+            if(!result?.length){
+                res.json({
+                    status: res.statusCode,
+                    msg: "You provided the wrong email adress."
+                })
+            }else{
+                const validPass = await compare
+                (userPwd, result[0].userPwd)
+                if(validPass){
+                    const token = createToken({
+                        emailAdd,
+                        userPwd
+                    })
+                    res.json({
+                        status: res.statusCode,
+                        msg: "Login s",
+                        token,
+                        result: result[0]
+                    })
+                }else{
+                    res.json({
+                        status: res.statusCode,
+                        msg: "Your password is incorrect"
+                    })
+                }
+            }
         })
     }
 }
